@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+  <title>Realtime communication with WebRTC</title>
+
+  <link rel="stylesheet" href="/css/main.css" />
+<!-- SOCKET LIBRARY IN HTML -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.11/lodash.min.js"></script>
+<link href="/css/toastr.min.css" rel="stylesheet"/>
+
+<script src="/js/jquery.min.js"></script>
+<script src="/js/toastr.min.js"></script>
+<script src="/js/socket.io.js"></script>
+
+</head>
+
+<body>
+
+  <h1>Realtime communication with WebRTC</h1>
+  <input type="text" id="msg" /> 
+  <button type="button" onclick="sendMessage()">Send</button>
+<!--
+   <div id="videos">
+    <video id="localVideo" autoplay muted playsinline></video>
+    <video id="remoteVideo" autoplay playsinline></video>
+  </div> -->
+
+
+  <!-- This file is automatically added/served when running "node index.js". -->
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+
+
+  <script>
+    const socket = io();
+    toastr.options = {
+        timeOut: 2000,
+        positionClass : 'toast-bottom-right',
+        extendedTimeOut: 0,
+        fadeOut: 0,
+        fadeIn: 0,
+        showDuration: 0,
+        hideDuration: 0,
+        debug: false
+    };
+    
+   /* socket.on('new-notification', (resp) => {
+      toastr.success(resp, 'New notification')
+    });
+
+    socket.on('online', (resp) => {
+      toastr.success(resp, 'New User '+ resp + ' Joined')
+    }); 
+
+    socket.on('log', (resp) => {
+      toastr.success('log User sdfs')
+    });*/
+
+    socket.on('IsActiveStatus', (resp) => {
+      toastr.success('IsActiveStatus :' + resp )
+    });
+    
+    function sendMessage() {
+      let msg = document.getElementById('msg').value;
+      if(msg.trim() !== '') {
+       // socket.emit("send-notification", msg);
+        socket.emit("create or join","room"+msg);
+        socket.emit("Allow to join","room"+msg);
+    //    socket.emit("message",msg,"NewM"+msg);
+     // socket.emit("message");
+      }
+      
+    }
+  </script>
+</body>
+
+</html>
